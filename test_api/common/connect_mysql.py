@@ -54,3 +54,4 @@ if __name__ == '__main__':
     sql = '''SELECT * FROM auth_user WHERE username = 'test_hlp';'''
     db.select(sql)
     db.close()
+
