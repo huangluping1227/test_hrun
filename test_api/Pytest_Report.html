@@ -125,11 +125,11 @@ tr {
                     <h2>PyTestReport</h2>
                     
                     <div>
-                        <p class='attribute'><strong>开始时间:</strong> 2020-04-02 11:09:03</p>
-                        <p class='attribute'><strong>执行耗时:</strong> 4.096042</p>
+                        <p class='attribute'><strong>开始时间:</strong> 2020-04-15 13:50:11</p>
+                        <p class='attribute'><strong>执行耗时:</strong> 6.537142</p>
                         <p class='attribute'><strong>状态:</strong>
-                            <span class="badge badge-success" style="background-color: rgb(0 255 127);">&nbsp;通过: 15&nbsp;</span>
-                            <span class="badge badge-danger" style="background-color: rgb(255, 99, 132);">&nbsp;失败：0&nbsp;</span>
+                            <span class="badge badge-success" style="background-color: rgb(0 255 127);">&nbsp;通过: 14&nbsp;</span>
+                            <span class="badge badge-danger" style="background-color: rgb(255, 99, 132);">&nbsp;失败：1&nbsp;</span>
                             <span class="badge badge-primary" style="background-color: rgb(54, 162, 235);">&nbsp;错误：0&nbsp;</span>
                             <span class="badge badge-secondary" style="background-color: rgb(201, 203, 207);">&nbsp;跳过：0&nbsp;</span>
                         </p>
@@ -296,20 +296,46 @@ tr {
                             
                         
                     
-                    <tr class='passClass' type="suite" id="testclass7">
+                    <tr class='failClass' type="suite" id="testclass7">
                         <td>test_login_04[-123456]</td>
                         <td>1</td>
-                        <td>1</td>
                         <td>0</td>
+                        <td>1</td>
                         <td>0</td>
                         <td>0</td>
                         <td><a href="javascript:showClassDetail('testclass7',1)">查看详情</a></td>
                     </tr>
                         
                             
-                                <tr id='testpass.7.1' cid="testclass7" class='hiddenRow' type="case">
-                                    <td class='passCase'><div class='testcase'>test_login_04[-123456]</div></td>
-                                    <td class='passCase' colspan='6' align='center'>PASS</td>
+                                <tr id='testfail.7.1' cid="testclass7" class='' type="case">
+                                    <td class='failCase'><div class='testcase'>test_login_04[-123456]</div></td>
+                                    <td colspan='6' align='center'>
+                                    <!--css div popup start-->
+                                    <a class="popup_link failCase" onfocus='this.blur();' href="javascript:showTestDetail('div_testfail.7.1')" >
+                                        FAIL</a>
+                                    <div id='div_testfail.7.1' class="popup_window">
+                                        <div style='text-align: right; color:red;cursor:pointer'>
+                                        <a onfocus='this.blur();' onclick="document.getElementById('div_testfail.7.1').style.display = 'none';" >
+                                           [x]</a>
+                                        </div>
+                                        <pre style="font-size: 14px;">
+testfail.7.1:
+Failed
+user = '', pwd = '123456'
+
+    @allure.story('测试登录接口')
+    @allure.title(' 用户名或密码为空，登录失败')
+    @pytest.mark.parametrize('user, pwd',[('', '123456'),('test_hlp', '')])
+    def test_login_04(user, pwd):
+        r = func_login(user, pwd)
+>       assert r['code'] == 3003
+E       assert 0 == 3003
+
+case\login_case\test_login.py:43: AssertionError
+                                        </pre>
+                                    </div>
+                                    <!--css div popup end-->
+                                    </td>
                                 </tr>
                             
                         
@@ -461,8 +487,8 @@ tr {
                     <tr id='total_row'>
                         <td>总计</td>
                         <td>15</td>
-                        <td>15</td>
-                        <td>0</td>
+                        <td>14</td>
+                        <td>1</td>
                         <td>0</td>
                         <td>0</td>
                         <td>&nbsp;</td>
@@ -571,8 +597,8 @@ function html_escape(s) {
                     data: {
                         datasets: [{
                             data: [
-                                15,
-                                0,
+                                14,
+                                1,
                                 0,
                                 0,
                             ],
