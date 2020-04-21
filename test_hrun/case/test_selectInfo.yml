@@ -1,0 +1,35 @@
+- config:
+    name: select_user_info api
+    request:
+      base_url: ${ENV(host)}
+    variables:
+      user: test_hlp
+      psw: '123456'
+      token: ${login($user, $psw)}
+
+
+- test:
+    name: 传正确的token，可以查询个人信息
+    request:
+      url: /api/v1/userinfo
+      method: GET
+      headers:
+        Authorization: Token $token
+#    setup_hooks:
+#      - ${setup_login($user, $psw, $request)}
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 0]
+      - eq: [content.msg, sucess!]
+      - eq: [content.data.0.name, $user]
+
+- test:
+    name: 传错误的token，不能获取到个人信息
+    request:
+      url: /api/v1/userinfo
+      method: GET
+      headers:
+        Authorization: Token f4b9a1dffbf525ecc93f8c80035c60fa546d5xxx
+    validate:
+      - eq: [status_code, 401]
+      - eq: [content.detail, Invalid token.]

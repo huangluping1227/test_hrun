@@ -1,0 +1,32 @@
+# 登录的测试用例
+- config:
+    name: login_api
+    request:
+      base_url: ${ENV(host)}
+      headers:
+        Content-Type: application/json
+- test:
+    name: 输入正确的账号密码，登录成功
+    request:
+      method: POST
+      url: /api/v1/login
+      json:
+        username: test
+        password: '123456'
+    validate:
+      - eq: [content.code, 0]
+      - eq: [status_code,200]
+      - eq: [content.msg, 'login success!']
+
+- test:
+    name: 输入一个未注册的账号，登陆失败
+    request:
+      method: POST
+      url: /api/v1/login
+      json:
+        username: xxxyyy
+        password: '123456'
+    validate:
+      - eq: [content.code, 3003]
+      - eq: [status_code,200]
+      - eq: [content.msg, '账号或密码不正确']

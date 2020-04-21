@@ -1,0 +1,83 @@
+- config:
+    name: update_user_info api
+    request:
+      base_url: ${ENV(host)}
+    variables:
+      user: test1
+      psw: '123456'
+      token: ${login($user, $psw)}
+
+- test:
+    name: 修改自己的个人信息，修改成功
+    request:
+      method: POST
+      url: /api/v1/userinfo
+      headers:
+        Authorization: Token $token
+        Content-Type: application/json
+      json:
+        name: $user
+        sex: F
+        age: 22
+        mail: 2513461@qq.com
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 0]
+      - eq: [content.message, update some data!]
+      - eq: [content.data.name, $user]
+
+- test:
+    name: 修改不是本人的用户信息，无权限操作
+    request:
+      method: POST
+      url: /api/v1/userinfo
+      headers:
+        Authorization: Token $token
+        Content-Type: application/json
+      json:
+        name: test1111
+        sex: F
+        age: 21
+        mail: 2513461@qq.com
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 4000]
+      - eq: [content.message, 无权限操作]
+
+- test:
+    name: sex参数传F和M两种类型，修改成功
+    parameters:
+      - sex: ['F', 'M']
+    request:
+      method: POST
+      url: /api/v1/userinfo
+      headers:
+        Authorization: Token $token
+        Content-Type: application/json
+      json:
+        name: $user
+        sex: $sex
+        age: 21
+        mail: 2513461@qq.com
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 0]
+      - eq: [content.message, update some data!]
+
+- test:
+    name: sex参数X类型，提示参数类型错误
+    request:
+      method: POST
+      url: /api/v1/userinfo
+      headers:
+        Authorization: Token $token
+        Content-Type: application/json
+      json:
+        name: $user
+        sex: X
+        age: 21
+        mail: 2513461@qq.com
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 3333]
+      - eq: [content.message, 参数类型错误]

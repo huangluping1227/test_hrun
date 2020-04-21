@@ -1,0 +1,38 @@
+- config:
+    name: regist_api
+    request:
+      base_url: ${ENV(host)}
+      headers:
+        Content-Type: application/json
+
+- test:
+    name: 用一个没注册过的账号注册，注册成功
+    request:
+      method: POST
+      json:
+        username: hlp112233
+        password: '123456'
+        mail: 1233@qq.com
+      url: /api/v1/register
+    variables:
+      del_sql: DELETE FROM auth_user WHERE username = 'hlp112233';
+    teardown_hooks:
+      - ${execute($del_sql)}
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 0]
+      - eq: [content.msg, 注册成功!]
+
+- test:
+    name: 用一个已注册过的账号注册，提示：用户已被注册
+    request:
+      method: POST
+      url: /api/v1/register
+      json:
+        username: test
+        password: '123456'
+        mail: 1233@qq.com
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.code, 2000]
+      - eq: [content.msg, test用户已被注册]
